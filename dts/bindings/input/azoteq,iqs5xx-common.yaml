@@ -28,6 +28,16 @@ properties:
     type: boolean
     description: "Register and report scroll gestures, both vertical and horizontal scroll is supported"
 
+
+  scroll-divisor:
+    type: int
+    description: |
+      Raw sensor units of finger travel per reported scroll unit. Lower values
+      emit more, finer scroll events -- required for true HID high-resolution
+      scrolling, where the host divides incoming events by the Resolution
+      Multiplier. The upstream driver hardcoded 32.
+    default: 32
+
   natural-scroll-x:
     type: boolean
     description: "Whether content should track finger movement when scrolling on the x axis."

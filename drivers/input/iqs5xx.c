@@ -177,8 +177,11 @@ static void iqs5xx_work_handler(struct k_work *work) {
         // Schedule release after 100ms.
         k_work_schedule(&data->button_release_work, K_MSEC(100));
     } else if (scroll) {
-        // TODO: Expose this divisor.
-        int16_t scroll_div = 32;
+        // Exposed via the `scroll-divisor` devicetree property.
+        int16_t scroll_div = (int16_t)config->scroll_divisor;
+        if (scroll_div < 1) {
+            scroll_div = 1;
+        }
 
         // Only one scrolling direction is valid at a time.
         // End the communication right after reporting the movement.
@@ -419,6 +422,7 @@ static int iqs5xx_init(const struct device *dev) {
         .flip_y = DT_INST_PROP(n, flip_y),                                                         \
         .bottom_beta = DT_INST_PROP_OR(n, bottom_beta, 5),                                         \
         .stationary_threshold = DT_INST_PROP_OR(n, stationary_threshold, 5),                       \
+        .scroll_divisor = DT_INST_PROP_OR(n, scroll_divisor, 32),                                  \
     };                                                                                             \
     DEVICE_DT_INST_DEFINE(n, iqs5xx_init, NULL, &iqs5xx_data_##n, &iqs5xx_config_##n, POST_KERNEL, \
                           CONFIG_INPUT_INIT_PRIORITY, NULL);

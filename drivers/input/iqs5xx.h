@@ -126,6 +126,7 @@ struct iqs5xx_config {
     bool scroll;
     bool natural_scroll_x;
     bool natural_scroll_y;
+    uint16_t scroll_divisor;
 
     // Axes configuration.
     bool switch_xy;
